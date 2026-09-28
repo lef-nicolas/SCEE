@@ -79,25 +79,29 @@ private fun QuickAnswerSettingsDialog(
 ) {
     var isEnabled by remember { mutableStateOf(quickAnswerPrefs.isEnabled(questType)) }
     var defaultKey by remember { mutableStateOf(quickAnswerPrefs.getDefaultOptionKey(questType)) }
+    var remembersLast by remember { mutableStateOf(quickAnswerPrefs.remembersLastAnswer(questType)) }
 
     ScrollableAlertDialog(
         onDismissRequest = onDismissRequest,
         title = { Text(stringResource(questType.title)) },
         content = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .toggleable(isEnabled, role = Role.Checkbox) {
-                        isEnabled = it
-                        quickAnswerPrefs.setEnabled(questType, it)
-                    }
-                    .padding(horizontal = 24.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Checkbox(checked = isEnabled, onCheckedChange = null)
-                Text(stringResource(Res.string.quick_answer_enable), style = MaterialTheme.typography.body1)
-            }
+            CheckboxRow(
+                text = stringResource(Res.string.quick_answer_enable),
+                checked = isEnabled,
+                onCheckedChange = {
+                    isEnabled = it
+                    quickAnswerPrefs.setEnabled(questType, it)
+                },
+            )
+            CheckboxRow(
+                text = stringResource(Res.string.quick_answer_remember_last),
+                checked = remembersLast,
+                enabled = isEnabled,
+                onCheckedChange = {
+                    remembersLast = it
+                    quickAnswerPrefs.setRemembersLastAnswer(questType, it)
+                },
+            )
             Text(
                 text = stringResource(Res.string.quick_answer_default),
                 style = MaterialTheme.typography.subtitle1,
@@ -128,4 +132,28 @@ private fun QuickAnswerSettingsDialog(
             TextButton(onClick = onDismissRequest) { Text(stringResource(Res.string.ok)) }
         },
     )
+}
+
+@Composable
+private fun CheckboxRow(
+    text: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    enabled: Boolean = true,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .toggleable(checked, enabled = enabled, role = Role.Checkbox, onValueChange = onCheckedChange)
+            .padding(horizontal = 24.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Checkbox(checked = checked, onCheckedChange = null, enabled = enabled)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled),
+        )
+    }
 }

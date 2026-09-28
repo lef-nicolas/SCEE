@@ -15,6 +15,8 @@ import de.westnordost.streetcomplete.util.math.enclosingBoundingBox
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /** A quest shown in the quick answer sheet */
@@ -39,22 +41,23 @@ class QuickAnswerController(
     // edits must be added even when the sheet is closed right after submitting
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    private val _fullFormRequestedFor = MutableStateFlow<OsmQuestKey?>(null)
     /** Quest for which the user explicitly requested the normal quest form */
-    private var fullFormRequestedFor: OsmQuestKey? = null
+    val fullFormRequestedFor: StateFlow<OsmQuestKey?> = _fullFormRequestedFor
 
     fun requestFullForm(questKey: OsmQuestKey) {
-        fullFormRequestedFor = questKey
+        _fullFormRequestedFor.value = questKey
+    }
+
+    /** Clears the request for the normal quest form of [questKey], if any */
+    fun clearFullFormRequest(questKey: OsmQuestKey) {
+        _fullFormRequestedFor.compareAndSet(questKey, null)
     }
 
     /** Cheap check whether the quick answer sheet may be shown for [quest], to avoid delaying
-     *  the normal quest form. Consumes a pending request for the full form. */
-    fun mayShowQuickAnswers(quest: OsmQuest): Boolean {
-        if (fullFormRequestedFor == quest.key) {
-            fullFormRequestedFor = null
-            return false
-        }
-        return quickAnswerPrefs.isEnabled(quest.type)
-    }
+     *  the normal quest form */
+    fun mayShowQuickAnswers(quest: OsmQuest): Boolean =
+        _fullFormRequestedFor.value != quest.key && quickAnswerPrefs.isEnabled(quest.type)
 
     /** Quests of the element of [quest] to show in the quick answer sheet, or null if there are
      *  fewer than two (the normal quest form is quicker then) or [quest] itself is not among them.

@@ -237,6 +237,20 @@ D'abord les 5 quêtes « passage piéton », puis les 5 quêtes « rue ».
   rapide ». Modifie `QuestSelectionViewModel.kt` (+6), `QuestSelectionScreen.kt` (+3),
   `QuestSelectionTopAppBar.kt` (+12, paramètres optionnels).
 
+### État (étape 4)
+
+- Réponse par défaut **par preset** : déjà assurée par `questPrefix` (réglages par preset actifs).
+- Nouvelle case par type de quête : « Utiliser la dernière réponse donnée comme réponse par
+  défaut » (`qs_<quête>_quick_answer_remember_last`).
+- `QuickAnswerLastAnswerRecorder` écoute les edits (`ElementEditsSource.Listener`) : aucune
+  modification du formulaire normal. Pour retrouver l'option, chaque option est rejouée sur les
+  tags d'avant l'edit ; celle qui produit exactement les mêmes changements devient le défaut.
+  Une réponse du formulaire complet compte donc aussi ; une réponse sans option rapide (ex.
+  podotactile « incorrect ») ne change rien.
+- Le recorder s'enregistre lui-même comme écouteur. Il est injecté dans `ApplicationInitializer`,
+  donc créé au démarrage de l'app, mais pas via `createdAtStart` : `startKoin` précède
+  l'initialisation de `Prefs.preferences`, et l'app plantait au lancement.
+
 ## Piste B : dictée vocale
 
 ### Principe

@@ -661,4 +661,5 @@
     <string name="quick_answer_lanes_1_1">1 dans chaque sens</string>
     <string name="quick_answer_lanes_2_2">2 dans chaque sens</string>
     <string name="action_quick_answer_quests">Montrer seulement les quêtes à réponse rapide</string>
+    <string name="quick_answer_remember_last">Utiliser la dernière réponse donnée comme réponse par défaut</string>
 </resources>

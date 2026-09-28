@@ -9,15 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -62,6 +60,11 @@ fun rememberQuickAnswerState(
     quest: OsmQuest,
     controller: QuickAnswerController = koinInject(),
 ): QuickAnswerState {
+    val fullFormRequestedFor by controller.fullFormRequestedFor.collectAsState()
+    // the request only applies while the normal form of this quest is shown
+    DisposableEffect(quest) {
+        onDispose { controller.clearFullFormRequest(quest.key) }
+    }
     var state by remember(quest) {
         mutableStateOf(
             if (controller.mayShowQuickAnswers(quest)) QuickAnswerState.Loading
@@ -73,7 +76,8 @@ fun rememberQuickAnswerState(
         val quests = withContext(Dispatchers.IO) { controller.getQuickAnswerQuests(quest) }
         state = if (quests != null) QuickAnswerState.Quests(quests) else QuickAnswerState.NotApplicable
     }
-    return state
+    // the shown quest does not change when requesting its own normal form from the sheet
+    return if (fullFormRequestedFor == quest.key) QuickAnswerState.NotApplicable else state
 }
 
 /** Sheet listing all quick-answerable quests of one element, each pre-filled with its default
@@ -197,23 +201,13 @@ private fun QuickAnswerRow(
             val index = selected?.let { options.indexOf(it) } ?: -1
             onSelect(options.getOrNull(index + 1)?.key)
         }
-        val buttonModifier = Modifier.width(128.dp)
-        val label = stringResource(selected?.label ?: Res.string.quick_answer_skip)
-        // filled with high contrast when answered, so the values are readable at a glance
-        if (selected != null) {
-            Button(onClick = onClick, modifier = buttonModifier) {
-                AnswerLabel(label)
-            }
-        } else {
-            OutlinedButton(
-                onClick = onClick,
-                modifier = buttonModifier,
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.medium)
-                ),
-            ) {
-                AnswerLabel(label)
-            }
+        Button(onClick = onClick, modifier = Modifier.width(128.dp)) {
+            Text(
+                text = stringResource(selected?.label ?: Res.string.quick_answer_skip),
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
         IconButton(onClick = onShowForm) {
             Icon(
@@ -224,14 +218,3 @@ private fun QuickAnswerRow(
     }
 }
 
-@Composable
-private fun AnswerLabel(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.body1,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis,
-    )
-}

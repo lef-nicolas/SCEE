@@ -836,4 +836,5 @@ Out of the box SCEE is configured to behave very similar to StreetComplete.</str
     <string name="quick_answer_lanes_1_1">1 in each direction</string>
     <string name="quick_answer_lanes_2_2">2 in each direction</string>
     <string name="action_quick_answer_quests">Show only quests with quick answers</string>
+    <string name="quick_answer_remember_last">Use the last answer given as default answer</string>
 </resources>
