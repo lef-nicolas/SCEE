@@ -650,4 +650,10 @@
     <string name="quest_material_limestone">Calcaire</string>
     <string name="quest_material_tiles">Carrelage</string>
     <string name="quest_material_bamboo">Bambou</string>
+    <string name="quick_answer_title">Réponses rapides</string>
+    <string name="quick_answer_hint">Touchez une valeur pour la changer, la flèche pour ouvrir la question complète.</string>
+    <string name="quick_answer_skip">Ignorer</string>
+    <string name="quick_answer_open_form">Ouvrir la question complète</string>
+    <string name="quick_answer_enable">Répondre à cette quête en même temps que les autres quêtes du même élément</string>
+    <string name="quick_answer_default">Réponse par défaut</string>
 </resources>

@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import de.westnordost.streetcomplete.R
 import de.westnordost.streetcomplete.data.quest.QuestTypeRegistry
 import de.westnordost.streetcomplete.quests.questPrefix
+import de.westnordost.streetcomplete.quickanswer.ui.QuickAnswerSettingsButton
 import de.westnordost.streetcomplete.quests.surface.AddRoadSurface
 import de.westnordost.streetcomplete.resources.*
 import org.koin.compose.koinInject
@@ -87,6 +88,7 @@ fun QuestSelectionRow(
                 DisabledHint(stringResource(Res.string.questList_disabled_by_default))
             }
         }
+        QuickAnswerSettingsButton(item.questType, Modifier.padding(start = 16.dp))
         if (item.questType.hasQuestSettings) {
             var showQuestSettings by remember { mutableStateOf(false) }
             Icon(

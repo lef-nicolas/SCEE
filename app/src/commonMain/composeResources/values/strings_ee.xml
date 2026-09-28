@@ -825,4 +825,10 @@ Out of the box SCEE is configured to behave very similar to StreetComplete.</str
     <string name="quest_tree_denotation_urban_description">Inside a settlement</string>
     <string name="quest_tree_denotation_natural">Natural</string>
     <string name="quest_tree_denotation_natural_description">Outside of a settlement</string>
+    <string name="quick_answer_title">Quick answers</string>
+    <string name="quick_answer_hint">Tap a value to change it, tap the arrow to open the full question.</string>
+    <string name="quick_answer_skip">Skip</string>
+    <string name="quick_answer_open_form">Open full question</string>
+    <string name="quick_answer_enable">Answer this quest together with the other quests of the same element</string>
+    <string name="quick_answer_default">Default answer</string>
 </resources>

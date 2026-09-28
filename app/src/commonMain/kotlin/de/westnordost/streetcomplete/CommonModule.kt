@@ -177,6 +177,7 @@ import de.westnordost.streetcomplete.screens.about.logs.LogsViewModel
 import de.westnordost.streetcomplete.screens.about.logs.LogsViewModelImpl
 import de.westnordost.streetcomplete.screens.main.MainBottomSheetViewModel
 import de.westnordost.streetcomplete.screens.main.MainBottomSheetViewModelImpl
+import de.westnordost.streetcomplete.quickanswer.quickAnswerModule
 import de.westnordost.streetcomplete.screens.main.MainViewModel
 import de.westnordost.streetcomplete.screens.main.MainViewModelImpl
 import de.westnordost.streetcomplete.screens.main.edithistory.EditHistoryViewModel
@@ -233,6 +234,7 @@ val OSM_API_URL = if (USE_TEST_API) OSM_API_URL_TEST else OSM_API_URL_LIVE
 private const val STATISTICS_BACKEND_URL = "https://streetcomplete.app/statistics/"
 
 val commonModule = module {
+    includes(quickAnswerModule)
 
     //region basic configuration
 

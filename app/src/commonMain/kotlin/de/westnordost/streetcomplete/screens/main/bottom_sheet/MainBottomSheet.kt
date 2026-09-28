@@ -26,6 +26,9 @@ import de.westnordost.streetcomplete.data.quest.ExternalSourceQuestKey
 import de.westnordost.streetcomplete.data.quest.OsmNoteQuestKey
 import de.westnordost.streetcomplete.data.quest.OsmQuestKey
 import de.westnordost.streetcomplete.quests.note_comments.AddNoteCommentForm
+import de.westnordost.streetcomplete.quickanswer.ui.QuickAnswerState
+import de.westnordost.streetcomplete.quickanswer.ui.QuickAnswersSheet
+import de.westnordost.streetcomplete.quickanswer.ui.rememberQuickAnswerState
 import de.westnordost.streetcomplete.resources.Res
 import de.westnordost.streetcomplete.resources.quest_create_note
 import de.westnordost.streetcomplete.screens.main.MainBottomSheetViewModel
@@ -68,6 +71,27 @@ fun MainBottomSheet(
 ) {
     var confirmEdit by remember { mutableStateOf<PendingEdit?>(null) }
     val prefs: Preferences = koinInject()
+
+    // SCEE quick answers: answer all quests of an element at once, if enabled for its quest types
+    if (shownBottomSheet is ShownBottomSheet.OsmQuest) {
+        when (val quickAnswers = rememberQuickAnswerState(shownBottomSheet.quest)) {
+            QuickAnswerState.NotApplicable -> {}
+            QuickAnswerState.Loading -> return
+            is QuickAnswerState.Quests -> {
+                QuickAnswersSheet(
+                    quests = quickAnswers.quests,
+                    element = shownBottomSheet.element,
+                    checkIsSurvey = { SuppressSurveyConfirmation || viewModel.isSurvey(shownBottomSheet.quest.geometry) },
+                    onToggleSurveyConfirmation = { SuppressSurveyConfirmation = it },
+                    onShowQuest = { viewModel.showQuest(it) },
+                    onSolved = { onSolved(shownBottomSheet.quest.type.icon, shownBottomSheet.quest.position) },
+                    onDismiss = onDismiss,
+                    modifier = modifier,
+                )
+                return
+            }
+        }
+    }
 
     when (shownBottomSheet) {
         is ShownBottomSheet.CreateOsmNote -> {
