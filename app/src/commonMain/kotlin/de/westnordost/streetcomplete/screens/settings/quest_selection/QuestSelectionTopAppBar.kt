@@ -45,6 +45,8 @@ fun QuestSelectionTopAppBar(
     search: String,
     onSearchChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onQuickAnswerOnly: () -> Unit = {},
+    showingQuickAnswerOnly: Boolean = false,
 ) {
     var showSearch by rememberSaveable { mutableStateOf(false) }
 
@@ -63,6 +65,8 @@ fun QuestSelectionTopAppBar(
                 onReset = onReset,
                 onSceeOnly = onSceeOnly,
                 showingSceeOnly = showingSceeOnly,
+                onQuickAnswerOnly = onQuickAnswerOnly,
+                showingQuickAnswerOnly = showingQuickAnswerOnly,
                 onClickSearch = { setShowSearch(!showSearch) }
             )
         },
@@ -107,6 +111,8 @@ private fun QuestSelectionTopBarActions(
     onReset: () -> Unit,
     onSceeOnly: () -> Unit,
     showingSceeOnly: Boolean,
+    onQuickAnswerOnly: () -> Unit,
+    showingQuickAnswerOnly: Boolean,
     onClickSearch: () -> Unit,
 ) {
     var showResetDialog by remember { mutableStateOf(false) }
@@ -137,6 +143,12 @@ private fun QuestSelectionTopBarActions(
                 showActionsDropdown = false
             }) {
                 Text(stringResource(if (showingSceeOnly) Res.string.action_all_quests else Res.string.action_scee_quests))
+            }
+            DropdownMenuItem(onClick = {
+                onQuickAnswerOnly()
+                showActionsDropdown = false
+            }) {
+                Text(stringResource(if (showingQuickAnswerOnly) Res.string.action_all_quests else Res.string.action_quick_answer_quests))
             }
         }
     }

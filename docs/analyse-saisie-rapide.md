@@ -116,10 +116,10 @@ app/src/commonMain/kotlin/de/westnordost/streetcomplete/quickanswer/
 │   └── QuickAnswerSettings.kt    // bouton ⚡ + dialogue dans Sélection des quêtes
 └── definitions/
     ├── CrossingDefinitions.kt    // îlot, marquage, feux, podotactile, bordure
-    └── StreetDefinitions.kt      // (étape 3) trottoir, surface, voies, sens unique, éclairage
+    └── StreetDefinitions.kt      // trottoir, surface, marquage des voies, voies, sens unique, éclairage
 ```
 
-Tests : `app/src/commonTest/.../quickanswer/CrossingQuickAnswersTest.kt`.
+Tests : `app/src/commonTest/.../quickanswer/` (`CrossingQuickAnswersTest`, `StreetQuickAnswersTest`).
 
 ### État (étape 2)
 
@@ -220,6 +220,22 @@ D'abord les 5 quêtes « passage piéton », puis les 5 quêtes « rue ».
 - **Divergence avec StreetComplete amont** : code isolé dans le package `quickanswer`, aucune
   classe de quête modifiée, 5 points d'accroche → conflits de merge limités. Si une classe de
   réponse change en amont, seule la définition correspondante casse à la compilation.
+
+### État (étape 3)
+
+- 6 définitions « rue » : `AddSidewalk` (des deux côtés / aucun / séparé), `AddRoadSurface`
+  (asphalte, pavés, béton, pavés taillés), `AddLaneMarkings` (oui / non), `AddLanes`
+  (1 par sens, 2 par sens, une seule voie), `AddOneway` (pas à sens unique), `AddWayLit`
+  (oui / non).
+- `AddLanes` n'apparaît qu'après `lane_markings=yes` : elle arrive donc dans une deuxième feuille,
+  après la réponse à `AddLaneMarkings`.
+- Nouveau filtre optionnel `appliesTo(element)` dans une définition : `AddLanes` est exclue de la
+  feuille sur les sens uniques (« 1 par sens » n'y a pas de sens).
+- Le sens unique ne propose que « pas à sens unique » : la direction dépend du sens de dessin de
+  la voie, à voir sur la carte dans le formulaire complet.
+- Filtre dans *Sélection des quêtes* → menu ⋮ → « Montrer seulement les quêtes à réponse
+  rapide ». Modifie `QuestSelectionViewModel.kt` (+6), `QuestSelectionScreen.kt` (+3),
+  `QuestSelectionTopAppBar.kt` (+12, paramètres optionnels).
 
 ## Piste B : dictée vocale
 

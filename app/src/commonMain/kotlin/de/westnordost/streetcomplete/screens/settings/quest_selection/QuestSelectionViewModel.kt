@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import de.westnordost.streetcomplete.quickanswer.QuickAnswerRegistry
 import org.jetbrains.compose.resources.getString
 
 @Stable
@@ -40,6 +41,7 @@ abstract class QuestSelectionViewModel : ViewModel() {
     abstract val currentCountry: String?
     abstract val selectedEditTypePresetName: StateFlow<String?>
     abstract val onlySceeQuests: MutableStateFlow<Boolean>
+    abstract val onlyQuickAnswerQuests: MutableStateFlow<Boolean>
 
     abstract fun select(questType: QuestType, selected: Boolean)
     abstract fun order(questType: QuestType, toAfter: QuestType)
@@ -79,6 +81,7 @@ class QuestSelectionViewModelImpl(
     }
 
     override val onlySceeQuests = MutableStateFlow(false)
+    override val onlyQuickAnswerQuests = MutableStateFlow(false)
 
     private val questTypeOrderListener = object : QuestTypeOrderSource.Listener {
         override fun onQuestTypeOrderAdded(item: QuestType, toAfter: QuestType) {
@@ -107,8 +110,8 @@ class QuestSelectionViewModelImpl(
     private val quests = MutableStateFlow<List<QuestSelection>>(emptyList())
 
     override val filteredQuests: StateFlow<List<QuestSelection>> =
-        combine(quests, searchText, questTitles, onlySceeQuests) { quests, searchText, titles, onlySceeQuests ->
-            filterQuests(quests, searchText, titles, onlySceeQuests)
+        combine(quests, searchText, questTitles, onlySceeQuests, onlyQuickAnswerQuests) { quests, searchText, titles, onlySceeQuests, onlyQuickAnswerQuests ->
+            filterQuests(quests, searchText, titles, onlySceeQuests, onlyQuickAnswerQuests)
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     private val currentCountryCodes = countryBoundaries.value.getIds(prefs.mapPosition)
@@ -205,10 +208,12 @@ class QuestSelectionViewModelImpl(
         quests: List<QuestSelection>,
         filter: String,
         titles: Map<String, String>,
-        onlySceeQuests: Boolean
+        onlySceeQuests: Boolean,
+        onlyQuickAnswerQuests: Boolean,
     ): List<QuestSelection> {
-        val questsToUse = if (!onlySceeQuests) quests
-            else quests.filter { questTypeRegistry.getOrdinalOf(it.questType)!! >= ApplicationConstants.EE_QUEST_OFFSET }
+        val questsToUse = (if (!onlySceeQuests) quests
+            else quests.filter { questTypeRegistry.getOrdinalOf(it.questType)!! >= ApplicationConstants.EE_QUEST_OFFSET })
+            .filter { !onlyQuickAnswerQuests || QuickAnswerRegistry.supports(it.questType) }
 
         val words = filter.takeIf { it.isNotBlank() }?.trim()?.lowercase()?.split(' ') ?: emptyList()
         return if (words.isEmpty()) {

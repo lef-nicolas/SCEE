@@ -57,9 +57,11 @@ class QuickAnswerController(
     }
 
     /** Quests of the element of [quest] to show in the quick answer sheet, or null if there are
-     *  fewer than two, as the normal quest form is quicker then. Blocking, call off the main thread. */
-    fun getQuickAnswerQuests(quest: OsmQuest): List<QuickAnswerQuest>? =
-        visibleQuestsSource.getAll(quest.position.enclosingBoundingBox(0.5))
+     *  fewer than two (the normal quest form is quicker then) or [quest] itself is not among them.
+     *  Blocking, call off the main thread. */
+    fun getQuickAnswerQuests(quest: OsmQuest): List<QuickAnswerQuest>? {
+        val element = mapDataSource.get(quest.elementType, quest.elementId) ?: return null
+        return visibleQuestsSource.getAll(quest.position.enclosingBoundingBox(0.5))
             .asSequence()
             .filterIsInstance<OsmQuest>()
             .filter { it.elementType == quest.elementType && it.elementId == quest.elementId }
@@ -67,11 +69,13 @@ class QuickAnswerController(
             .sortedBy { QuickAnswerRegistry.indexOf(it.type) }
             .mapNotNull { q ->
                 val definition = QuickAnswerRegistry.get(q.type) ?: return@mapNotNull null
+                if (!definition.isApplicableTo(element)) return@mapNotNull null
                 val defaultKey = quickAnswerPrefs.getDefaultOptionKey(q.type) ?: return@mapNotNull null
                 QuickAnswerQuest(q, definition, defaultKey)
             }
             .toList()
-            .takeIf { it.size >= 2 }
+            .takeIf { quests -> quests.size >= 2 && quests.any { it.quest.key == quest.key } }
+    }
 
     /** Applies the selected option (by key) of each quest, in order. Each answer is applied to the
      *  element as modified by the previous ones, and skipped if its quest does not apply anymore.

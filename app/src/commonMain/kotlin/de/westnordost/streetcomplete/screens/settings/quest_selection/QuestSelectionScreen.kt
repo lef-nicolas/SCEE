@@ -27,6 +27,7 @@ fun QuestSelectionScreen(
 ) {
     val currentPresetName by viewModel.selectedEditTypePresetName.collectAsState()
     val onlySceeQuests by viewModel.onlySceeQuests.collectAsState()
+    val onlyQuickAnswerQuests by viewModel.onlyQuickAnswerQuests.collectAsState()
 
     val searchText by viewModel.searchText.collectAsState()
 
@@ -44,6 +45,8 @@ fun QuestSelectionScreen(
             onReset = { viewModel.resetAll() },
             onSceeOnly = { viewModel.onlySceeQuests.value = !onlySceeQuests; },
             showingSceeOnly = onlySceeQuests,
+            onQuickAnswerOnly = { viewModel.onlyQuickAnswerQuests.value = !onlyQuickAnswerQuests },
+            showingQuickAnswerOnly = onlyQuickAnswerQuests,
             search = searchText,
             onSearchChange = viewModel::updateSearchText,
         )

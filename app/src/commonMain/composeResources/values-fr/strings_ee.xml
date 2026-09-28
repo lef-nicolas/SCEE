@@ -656,4 +656,9 @@
     <string name="quick_answer_open_form">Ouvrir la question complète</string>
     <string name="quick_answer_enable">Répondre à cette quête en même temps que les autres quêtes du même élément</string>
     <string name="quick_answer_default">Réponse par défaut</string>
+    <string name="quick_answer_sidewalk_both">Des deux côtés</string>
+    <string name="quick_answer_sidewalk_separate">Séparé</string>
+    <string name="quick_answer_lanes_1_1">1 dans chaque sens</string>
+    <string name="quick_answer_lanes_2_2">2 dans chaque sens</string>
+    <string name="action_quick_answer_quests">Montrer seulement les quêtes à réponse rapide</string>
 </resources>

@@ -1,6 +1,7 @@
 package de.westnordost.streetcomplete.quickanswer
 
 import de.westnordost.streetcomplete.data.osm.geometry.ElementGeometry
+import de.westnordost.streetcomplete.data.osm.mapdata.Element
 import de.westnordost.streetcomplete.data.osm.osmquests.OsmElementQuestType
 import de.westnordost.streetcomplete.osm.Tags
 import org.jetbrains.compose.resources.StringResource
@@ -22,11 +23,16 @@ class QuickOption<T>(
  *  through the normal quest form. */
 class QuickAnswerDefinition<T>(
     val questType: KClass<out OsmElementQuestType<T>>,
+    /** Whether the options make sense for the given element. If not, the quest is only answerable
+     *  through its normal form (e.g. "1 lane in each direction" on a oneway road). */
+    private val appliesTo: (Element) -> Boolean = { true },
     /** Answers the user can cycle through. The first one is the default unless the user chose
      *  another one. Evaluated on each access, as it may depend on quest settings. */
     private val getOptions: () -> List<QuickOption<T>>,
 ) {
     val options: List<QuickOption<T>> get() = getOptions()
+
+    fun isApplicableTo(element: Element): Boolean = appliesTo(element)
 
     fun option(key: String?): QuickOption<T>? = options.firstOrNull { it.key == key }
 
