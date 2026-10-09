@@ -6,9 +6,14 @@ import de.westnordost.streetcomplete.quests.crossing_kerb_height.AddCrossingKerb
 import de.westnordost.streetcomplete.quests.crossing_markings.AddCrossingMarkings
 import de.westnordost.streetcomplete.quests.crossing_markings.CrossingMarkings
 import de.westnordost.streetcomplete.quests.crossing_signals.AddCrossingSignals
+import de.westnordost.streetcomplete.quests.kerb_height.AddKerbHeight
 import de.westnordost.streetcomplete.quests.kerb_height.KerbHeight
 import de.westnordost.streetcomplete.quests.kerb_height.title
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingCrosswalk
+import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingKerb
+import de.westnordost.streetcomplete.quests.traffic_signals_button.AddTrafficSignalsButton
+import de.westnordost.streetcomplete.quests.traffic_signals_sound.AddTrafficSignalsSound
+import de.westnordost.streetcomplete.quests.traffic_signals_vibrate.AddTrafficSignalsVibration
 import de.westnordost.streetcomplete.quests.tactile_paving.TactilePavingCrosswalkAnswer
 import de.westnordost.streetcomplete.quickanswer.QuickAnswerDefinition
 import de.westnordost.streetcomplete.quickanswer.QuickOption
@@ -21,6 +26,16 @@ val crossingQuickAnswers: List<QuickAnswerDefinition<*>> = listOf(
     QuickAnswerDefinition(AddCrossingSignals::class) { noYesOptions },
     QuickAnswerDefinition(AddTactilePavingCrosswalk::class) { tactilePavingOptions },
     QuickAnswerDefinition(AddCrossingKerbHeight::class) { kerbHeightOptions },
+    // only on crossings with traffic signals
+    QuickAnswerDefinition(AddTrafficSignalsButton::class) { yesNoOptions },
+    QuickAnswerDefinition(AddTrafficSignalsSound::class) { noYesOptions },
+    QuickAnswerDefinition(AddTrafficSignalsVibration::class) { noYesOptions },
+)
+
+/** Quick answers for quests about kerbs, which are usually next to crossings */
+val kerbQuickAnswers: List<QuickAnswerDefinition<*>> = listOf(
+    QuickAnswerDefinition(AddKerbHeight::class) { kerbHeightOptions },
+    QuickAnswerDefinition(AddTactilePavingKerb::class) { yesNoOptions },
 )
 
 private val noYesOptions = listOf(

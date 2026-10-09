@@ -662,4 +662,17 @@
     <string name="quick_answer_lanes_2_2">2 dans chaque sens</string>
     <string name="action_quick_answer_quests">Montrer seulement les quêtes à réponse rapide</string>
     <string name="quick_answer_remember_last">Utiliser la dernière réponse donnée comme réponse par défaut</string>
+    <string name="quick_answer_cards_both">Débit et crédit</string>
+    <string name="quick_answer_cards_none">Pas de carte</string>
+    <string name="quick_answer_cards_debit">Débit uniquement</string>
+    <string name="quick_answer_cards_credit">Crédit uniquement</string>
+    <string name="quick_answer_seating_both">Intérieur et extérieur</string>
+    <string name="quick_answer_seating_indoor">Intérieur uniquement</string>
+    <string name="quick_answer_seating_outdoor">Extérieur uniquement</string>
+    <string name="quick_answer_seating_takeaway">À emporter uniquement</string>
+    <string name="quick_answer_bike_parking_stands">Arceaux</string>
+    <string name="quick_answer_bike_parking_wall_loops">Pince-roues</string>
+    <string name="quick_answer_access_customers">Clients</string>
+    <string name="quick_answer_access_private">Privé</string>
+    <string name="quick_answer_toilets_fee_non_customers">Payant hors clients</string>
 </resources>

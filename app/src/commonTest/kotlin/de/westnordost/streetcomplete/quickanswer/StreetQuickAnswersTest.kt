@@ -6,6 +6,7 @@ import de.westnordost.streetcomplete.quests.lane_markings.AddLaneMarkings
 import de.westnordost.streetcomplete.quests.lanes.AddLanes
 import de.westnordost.streetcomplete.quests.oneway.AddOneway
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
+import de.westnordost.streetcomplete.quests.smoothness.AddRoadSmoothness
 import de.westnordost.streetcomplete.quests.surface.AddRoadSurface
 import de.westnordost.streetcomplete.quests.way_lit.AddWayLit
 import de.westnordost.streetcomplete.testutils.way
@@ -62,6 +63,18 @@ class StreetQuickAnswersTest {
             setOf(StringMapEntryAdd("lit", "yes")),
             applyFirstQuickAnswer(AddWayLit(), roadTags)
         )
+        assertEquals(
+            setOf(StringMapEntryAdd("smoothness", "good")),
+            applyFirstQuickAnswer(AddRoadSmoothness(), roadTags)
+        )
+    }
+
+    @Test fun `smoothness is only quick answerable on surfaces with all options`() {
+        setUpQuestPrefs()
+        val definition = QuickAnswerRegistry.get(AddRoadSmoothness())!!
+        assertTrue(definition.isApplicableTo(way(tags = roadTags + ("surface" to "asphalt"))))
+        assertFalse(definition.isApplicableTo(way(tags = roadTags + ("surface" to "gravel"))))
+        assertFalse(definition.isApplicableTo(way(tags = roadTags + ("surface" to "grass"))))
     }
 
     @Test fun `lanes are not quick answerable on oneways`() {
@@ -77,6 +90,7 @@ private val roadTags = mapOf("highway" to "residential")
 private fun streetQuestTypes(): List<OsmElementQuestType<*>> = listOf(
     AddSidewalk(),
     AddRoadSurface(),
+    AddRoadSmoothness(),
     AddLaneMarkings(),
     AddLanes(),
     AddOneway(),

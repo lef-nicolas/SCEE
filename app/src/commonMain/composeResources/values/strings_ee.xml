@@ -837,4 +837,17 @@ Out of the box SCEE is configured to behave very similar to StreetComplete.</str
     <string name="quick_answer_lanes_2_2">2 in each direction</string>
     <string name="action_quick_answer_quests">Show only quests with quick answers</string>
     <string name="quick_answer_remember_last">Use the last answer given as default answer</string>
+    <string name="quick_answer_cards_both">Debit and credit</string>
+    <string name="quick_answer_cards_none">No cards</string>
+    <string name="quick_answer_cards_debit">Debit only</string>
+    <string name="quick_answer_cards_credit">Credit only</string>
+    <string name="quick_answer_seating_both">Inside and outside</string>
+    <string name="quick_answer_seating_indoor">Inside only</string>
+    <string name="quick_answer_seating_outdoor">Outside only</string>
+    <string name="quick_answer_seating_takeaway">Takeaway only</string>
+    <string name="quick_answer_bike_parking_stands">Stands</string>
+    <string name="quick_answer_bike_parking_wall_loops">Wheelbender</string>
+    <string name="quick_answer_access_customers">Customers</string>
+    <string name="quick_answer_access_private">Private</string>
+    <string name="quick_answer_toilets_fee_non_customers">Non-customers pay</string>
 </resources>

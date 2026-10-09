@@ -14,6 +14,12 @@ import de.westnordost.streetcomplete.quests.oneway.AddOneway
 import de.westnordost.streetcomplete.quests.oneway.OnewayAnswer
 import de.westnordost.streetcomplete.quests.oneway.title
 import de.westnordost.streetcomplete.quests.sidewalk.AddSidewalk
+import de.westnordost.streetcomplete.quests.smoothness.AddRoadSmoothness
+import de.westnordost.streetcomplete.quests.smoothness.Smoothness
+import de.westnordost.streetcomplete.quests.smoothness.SmoothnessAnswer
+import de.westnordost.streetcomplete.quests.smoothness.SmoothnessValueAnswer
+import de.westnordost.streetcomplete.quests.smoothness.getImage
+import de.westnordost.streetcomplete.quests.smoothness.title
 import de.westnordost.streetcomplete.quests.surface.AddRoadSurface
 import de.westnordost.streetcomplete.quests.way_lit.AddWayLit
 import de.westnordost.streetcomplete.quests.way_lit.WayLit
@@ -26,6 +32,7 @@ import de.westnordost.streetcomplete.resources.*
 val streetQuickAnswers: List<QuickAnswerDefinition<*>> = listOf(
     QuickAnswerDefinition(AddSidewalk::class) { sidewalkOptions },
     QuickAnswerDefinition(AddRoadSurface::class) { roadSurfaceOptions },
+    QuickAnswerDefinition(AddRoadSmoothness::class, appliesTo = { hasAllSmoothnessOptions(it.tags) }) { smoothnessOptions },
     QuickAnswerDefinition(AddLaneMarkings::class) { yesNoOptions },
     // lanes "in each direction" make no sense on oneways
     QuickAnswerDefinition(AddLanes::class, appliesTo = { !isOneway(it.tags) }) { lanesOptions },
@@ -34,7 +41,7 @@ val streetQuickAnswers: List<QuickAnswerDefinition<*>> = listOf(
     QuickAnswerDefinition(AddWayLit::class) { wayLitOptions },
 )
 
-private val yesNoOptions = listOf(
+internal val yesNoOptions = listOf(
     QuickOption("yes", true, Res.string.quest_generic_hasFeature_yes),
     QuickOption("no", false, Res.string.quest_generic_hasFeature_no),
 )
@@ -51,6 +58,21 @@ private val roadSurfaceOptions = listOf(
     Surface.CONCRETE,
     Surface.SETT,
 ).map { QuickOption(it.name, it, it.title) }
+
+private val smoothnessValues = listOf(
+    Smoothness.GOOD,
+    Smoothness.EXCELLENT,
+    Smoothness.INTERMEDIATE,
+    Smoothness.BAD,
+)
+
+internal val smoothnessOptions = smoothnessValues
+    .map { QuickOption<SmoothnessAnswer>(it.name, SmoothnessValueAnswer(it), it.title) }
+
+/** The smoothness form only offers the values that are possible for the surface (e.g. no
+ *  "excellent" gravel), so the quick answers are only offered if all of them are possible. */
+internal fun hasAllSmoothnessOptions(tags: Map<String, String>): Boolean =
+    smoothnessValues.all { it.getImage(tags["surface"]) != null }
 
 private val lanesOptions = listOf<QuickOption<LanesAnswer>>(
     QuickOption("1_1", Lanes(forward = 1, backward = 1), Res.string.quick_answer_lanes_1_1),

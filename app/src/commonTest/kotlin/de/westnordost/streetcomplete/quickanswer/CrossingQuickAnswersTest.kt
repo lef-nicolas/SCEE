@@ -8,6 +8,9 @@ import de.westnordost.streetcomplete.quests.crossing_kerb_height.AddCrossingKerb
 import de.westnordost.streetcomplete.quests.crossing_markings.AddCrossingMarkings
 import de.westnordost.streetcomplete.quests.crossing_signals.AddCrossingSignals
 import de.westnordost.streetcomplete.quests.tactile_paving.AddTactilePavingCrosswalk
+import de.westnordost.streetcomplete.quests.traffic_signals_button.AddTrafficSignalsButton
+import de.westnordost.streetcomplete.quests.traffic_signals_sound.AddTrafficSignalsSound
+import de.westnordost.streetcomplete.quests.traffic_signals_vibrate.AddTrafficSignalsVibration
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -58,6 +61,10 @@ class CrossingQuickAnswersTest {
             setOf(StringMapEntryAdd("kerb", "lowered")),
             applyFirstOption(AddCrossingKerbHeight())
         )
+        assertEquals(
+            setOf(StringMapEntryAdd("button_operated", "yes")),
+            applyFirstOption(AddTrafficSignalsButton())
+        )
     }
 
     @Test fun `extended crossing markings do not offer the unspecific yes`() {
@@ -93,6 +100,9 @@ private fun crossingQuestTypes(): List<OsmElementQuestType<*>> = listOf(
     AddCrossingSignals(),
     AddTactilePavingCrosswalk(),
     AddCrossingKerbHeight(),
+    AddTrafficSignalsButton(),
+    AddTrafficSignalsSound(),
+    AddTrafficSignalsVibration(),
 )
 
 private fun apply(questType: OsmElementQuestType<*>, key: String) =
