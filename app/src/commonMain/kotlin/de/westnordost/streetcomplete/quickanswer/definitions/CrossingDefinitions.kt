@@ -49,12 +49,12 @@ private val tactilePavingOptions = listOf(
 )
 
 private val kerbHeightOptions = listOf(
-    KerbHeight.LOWERED,
-    KerbHeight.FLUSH,
-    KerbHeight.KERB_RAMP,
-    KerbHeight.RAISED,
-    KerbHeight.NO_KERB,
-).map { QuickOption(it.name, it, it.title) }
+    "LOWERED" to KerbHeight.LOWERED,
+    "FLUSH" to KerbHeight.FLUSH,
+    "KERB_RAMP" to KerbHeight.KERB_RAMP,
+    "RAISED" to KerbHeight.RAISED,
+    "NO_KERB" to KerbHeight.NO_KERB,
+).map { (key, value) -> QuickOption(key, value, value.title) }
 
 /** Same key as the private one in [AddCrossingMarkings] */
 private const val PREF_CROSSING_MARKING_EXTENDED = "qs_AddCrossingMarkings_extended"
@@ -64,12 +64,12 @@ private const val PREF_CROSSING_MARKING_EXTENDED = "qs_AddCrossingMarkings_exten
 private fun crossingMarkingsOptions(): List<QuickOption<Set<CrossingMarkings>>> =
     if (Prefs.preferences.getBoolean(PREF_CROSSING_MARKING_EXTENDED, false)) {
         listOf(
-            CrossingMarkings.ZEBRA,
-            CrossingMarkings.LINES,
-            CrossingMarkings.LADDER,
-            CrossingMarkings.DASHES,
-            CrossingMarkings.NO,
-        ).map { QuickOption(it.name, setOf(it), it.titleRes!!) }
+            "ZEBRA" to CrossingMarkings.ZEBRA,
+            "LINES" to CrossingMarkings.LINES,
+            "LADDER" to CrossingMarkings.LADDER,
+            "DASHES" to CrossingMarkings.DASHES,
+            "NO" to CrossingMarkings.NO,
+        ).map { (key, value) -> QuickOption(key, setOf(value), value.titleRes!!) }
     } else {
         listOf(
             QuickOption("YES", setOf(CrossingMarkings.YES), Res.string.quest_generic_hasFeature_yes),

@@ -91,11 +91,11 @@ private val veganOptions = listOf<QuickOption<DietAvailabilityAnswer>>(
 )
 
 private val bikeParkingTypeOptions = listOf(
-    QuickOption(BikeParkingType.STANDS.name, BikeParkingType.STANDS, Res.string.quick_answer_bike_parking_stands),
-    QuickOption(BikeParkingType.WALL_LOOPS.name, BikeParkingType.WALL_LOOPS, Res.string.quick_answer_bike_parking_wall_loops),
-    QuickOption(BikeParkingType.SHED.name, BikeParkingType.SHED, Res.string.quest_bicycle_parking_type_shed),
-    QuickOption(BikeParkingType.LOCKERS.name, BikeParkingType.LOCKERS, Res.string.quest_bicycle_parking_type_locker),
-    QuickOption(BikeParkingType.TWO_TIER.name, BikeParkingType.TWO_TIER, Res.string.quest_bicycle_parking_type_two_tier),
+    QuickOption("STANDS", BikeParkingType.STANDS, Res.string.quick_answer_bike_parking_stands),
+    QuickOption("WALL_LOOPS", BikeParkingType.WALL_LOOPS, Res.string.quick_answer_bike_parking_wall_loops),
+    QuickOption("SHED", BikeParkingType.SHED, Res.string.quest_bicycle_parking_type_shed),
+    QuickOption("LOCKERS", BikeParkingType.LOCKERS, Res.string.quest_bicycle_parking_type_locker),
+    QuickOption("TWO_TIER", BikeParkingType.TWO_TIER, Res.string.quest_bicycle_parking_type_two_tier),
 )
 
 private val parkingAccessOptions = listOf(
@@ -121,9 +121,9 @@ private val benchBackrestOptions = listOf(
 )
 
 private val benchMaterialOptions = listOf(
-    QuickOption(BenchMaterial.WOOD.name, BenchMaterial.WOOD, Res.string.quest_material_wood),
-    QuickOption(BenchMaterial.METAL.name, BenchMaterial.METAL, Res.string.quest_material_metal),
-    QuickOption(BenchMaterial.CONCRETE.name, BenchMaterial.CONCRETE, Res.string.quest_material_concrete),
-    QuickOption(BenchMaterial.STONE.name, BenchMaterial.STONE, Res.string.quest_material_stone),
-    QuickOption(BenchMaterial.PLASTIC.name, BenchMaterial.PLASTIC, Res.string.quest_material_plastic),
+    QuickOption("WOOD", BenchMaterial.WOOD, Res.string.quest_material_wood),
+    QuickOption("METAL", BenchMaterial.METAL, Res.string.quest_material_metal),
+    QuickOption("CONCRETE", BenchMaterial.CONCRETE, Res.string.quest_material_concrete),
+    QuickOption("STONE", BenchMaterial.STONE, Res.string.quest_material_stone),
+    QuickOption("PLASTIC", BenchMaterial.PLASTIC, Res.string.quest_material_plastic),
 )

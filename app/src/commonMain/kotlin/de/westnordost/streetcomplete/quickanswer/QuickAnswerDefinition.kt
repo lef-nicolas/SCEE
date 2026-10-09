@@ -9,7 +9,8 @@ import kotlin.reflect.KClass
 
 /** One pre-defined answer that can be selected in the quick answer sheet */
 class QuickOption<T>(
-    /** stable identifier, persisted in the preferences as default answer */
+    /** stable identifier, persisted in the preferences as default answer. Written out instead of
+     *  using an enum name, so that renaming an upstream enum does not reset the user's choice */
     val key: String,
     val answer: T,
     val label: StringResource,

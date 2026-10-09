@@ -53,21 +53,23 @@ private val sidewalkOptions = listOf(
 )
 
 private val roadSurfaceOptions = listOf(
-    Surface.ASPHALT,
-    Surface.PAVING_STONES,
-    Surface.CONCRETE,
-    Surface.SETT,
-).map { QuickOption(it.name, it, it.title) }
+    "ASPHALT" to Surface.ASPHALT,
+    "PAVING_STONES" to Surface.PAVING_STONES,
+    "CONCRETE" to Surface.CONCRETE,
+    "SETT" to Surface.SETT,
+).map { (key, value) -> QuickOption(key, value, value.title) }
 
-private val smoothnessValues = listOf(
-    Smoothness.GOOD,
-    Smoothness.EXCELLENT,
-    Smoothness.INTERMEDIATE,
-    Smoothness.BAD,
+private val smoothnessByKey = listOf(
+    "GOOD" to Smoothness.GOOD,
+    "EXCELLENT" to Smoothness.EXCELLENT,
+    "INTERMEDIATE" to Smoothness.INTERMEDIATE,
+    "BAD" to Smoothness.BAD,
 )
 
-internal val smoothnessOptions = smoothnessValues
-    .map { QuickOption<SmoothnessAnswer>(it.name, SmoothnessValueAnswer(it), it.title) }
+private val smoothnessValues = smoothnessByKey.map { it.second }
+
+internal val smoothnessOptions = smoothnessByKey
+    .map { (key, value) -> QuickOption<SmoothnessAnswer>(key, SmoothnessValueAnswer(value), value.title) }
 
 /** The smoothness form only offers the values that are possible for the surface (e.g. no
  *  "excellent" gravel), so the quick answers are only offered if all of them are possible. */
@@ -81,7 +83,7 @@ private val lanesOptions = listOf<QuickOption<LanesAnswer>>(
 )
 
 private val onewayOptions = listOf(
-    QuickOption(OnewayAnswer.NO_ONEWAY.name, OnewayAnswer.NO_ONEWAY, OnewayAnswer.NO_ONEWAY.title),
+    QuickOption("NO_ONEWAY", OnewayAnswer.NO_ONEWAY, OnewayAnswer.NO_ONEWAY.title),
 )
 
 private val wayLitOptions = listOf<QuickOption<WayLitOrIsStepsAnswer>>(

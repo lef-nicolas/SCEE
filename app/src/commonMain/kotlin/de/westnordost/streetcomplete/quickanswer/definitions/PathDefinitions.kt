@@ -19,9 +19,9 @@ val pathQuickAnswers: List<QuickAnswerDefinition<*>> = listOf(
 )
 
 private val pathSurfaceOptions = listOf(
-    Surface.ASPHALT,
-    Surface.PAVING_STONES,
-    Surface.COMPACTED,
-    Surface.FINE_GRAVEL,
-    Surface.DIRT,
-).map { QuickOption<PathSurfaceAnswer>(it.name, SurfaceAnswer(it), it.title) }
+    "ASPHALT" to Surface.ASPHALT,
+    "PAVING_STONES" to Surface.PAVING_STONES,
+    "COMPACTED" to Surface.COMPACTED,
+    "FINE_GRAVEL" to Surface.FINE_GRAVEL,
+    "DIRT" to Surface.DIRT,
+).map { (key, value) -> QuickOption<PathSurfaceAnswer>(key, SurfaceAnswer(value), value.title) }

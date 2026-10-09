@@ -13,7 +13,7 @@ import de.westnordost.streetcomplete.quickanswer.definitions.toiletsQuickAnswers
 
 /** All quest types that support quick answers, in the order they are shown in the sheet */
 object QuickAnswerRegistry {
-    private val definitions: List<QuickAnswerDefinition<*>> =
+    val definitions: List<QuickAnswerDefinition<*>> =
         crossingQuickAnswers +
         kerbQuickAnswers +
         streetQuickAnswers +

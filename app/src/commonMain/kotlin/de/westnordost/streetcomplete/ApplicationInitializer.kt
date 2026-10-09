@@ -8,7 +8,6 @@ import de.westnordost.streetcomplete.data.download.tiles.DownloadedTilesControll
 import de.westnordost.streetcomplete.data.edithistory.EditHistoryController
 import de.westnordost.streetcomplete.data.preferences.Preferences
 import de.westnordost.streetcomplete.data.preferences.ResurveyIntervalsUpdater
-import de.westnordost.streetcomplete.quickanswer.QuickAnswerLastAnswerRecorder
 import de.westnordost.streetcomplete.screens.settings.renameUpdatedQuests
 import de.westnordost.streetcomplete.screens.settings.renamedQuests
 import de.westnordost.streetcomplete.util.TempLogger
@@ -33,8 +32,6 @@ class ApplicationInitializer(
     private val downloadedTilesController: DownloadedTilesController,
     private val prefs: Preferences,
     private val resurveyIntervalsUpdater: ResurveyIntervalsUpdater,
-    // only injected so that it listens to edits from the start
-    @Suppress("unused") private val quickAnswerLastAnswerRecorder: QuickAnswerLastAnswerRecorder,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + CoroutineName("Application"))
 
