@@ -131,7 +131,8 @@ fun QuickAnswersSheet(
         },
         content = {
             Column(
-                modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 8.dp),
+                // bottom space so that the OK button does not overlap the last row
+                modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 72.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 for (q in quests) {
